@@ -48,7 +48,7 @@ def get_install_token(install_id: str):
 @app.get('/')
 async def root():
     # requests.post(url, data = json.dumps(data),header=headers)
-    return {'message': get_install_token("90642639") }
+    return {'message': get_install_token("90862783") }
 
 def comment_on_pr(token: str, owner: str, repo: str, pr_number: str):
     url = f"https://api.github.com/repos/{owner}/{repo}/issues/{pr_number}/comments"
@@ -112,6 +112,14 @@ def create_pr(repo: str, token: str):
     commit_workflow(repo, token)
     make_pr(repo, token,default_branch)
 
+@app.get("/installed")
+def installed_app():
+    token = get_install_token("90862783")
+    headers = make_headers(token)
+    headers = {"Accept": "application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28","Authorization": f"Bearer {make_jwt()}" }
+    r = requests.get(f"https://api.github.com/repos/Yharnix/ci/installation", headers=headers)
+    print(r.json())
+    return r.json()
      
     
 @app.get("/test_default_branch")
