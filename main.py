@@ -1,4 +1,8 @@
+# hlots of potential edge cases with these api calls
+# for one repos can not be empty
+
 from fastapi import FastAPI, Request, Header
+import base64
 from dotenv import load_dotenv
 from pydantic import BaseModel
 # import requests
@@ -57,30 +61,92 @@ def comment_on_pr(token: str, owner: str, repo: str, pr_number: str):
     res = requests.post(url, headers=headers,json=data)
     print(res.status_code)
     print(res.json())
+def make_headers(token: str):
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "Authorization": f"Bearer {token}",
+        "X-GitHub-Api-Version": "2022-11-28",
+    }
+    return headers
+
+def make_pr(repo: str,token: str, default_branch: str):
+    headers = make_headers(token)
+    url = f"https://api.github.com/repos/{repo}/pulls"
+    data = {"title": "Custom workflow required by Taffy", "body": "Please approve this pr to allow taffy to spin up infrastructure", "head":"taffy_workflow", "base":default_branch}
+    res = requests.post(url, headers=headers, json=data).json()
+    
+def commit_workflow(repo, token):
+    headers = make_headers(token)
+    url = f"https://api.github.com/repos/{repo}/contents/.github/workflows/taffy.yml"
+    with open("./workflows/taffy.yml", "rb") as f:
+        content = f.read()
+        b64_content = base64.b64encode(content).decode("utf-8")
+    data = {"message": "Taffy BOT -> Add a workflow file to your repo", "content": b64_content, "branch": "taffy_workflow"}
+    res = requests.put(url, headers=headers, json=data).json()
+
+def create_branch(repo: str, sha: str, token: str):
+    headers = make_headers(token)
+    url = f"https://api.github.com/repos/{repo}/git/refs"
+    data = {"ref":"refs/heads/taffy_workflow", "sha":sha}
+    res = requests.post(url,headers=headers,json=data).json()
+
+def get_default_branch_sha(repo: str, branch: str, token: str):
+    headers = make_headers(token)
+    url = f"https://api.github.com/repos/{repo}/git/ref/heads/{branch}"
+    print(url)
+    res = requests.get(url,headers=headers).json()
+    print(res)
+    return res["object"]["sha"]
     
 def get_default_branch(repo: str, token: str):
     url = f"https://api.github.com/repos/{repo}"
     print(url)
-    headers = {
-        "Accept": "application/vnd.github+json",
-        "Authorization": f"Bearer {token}",
-        "X-GitHub-Api-Version": "2022-11-28",
-    }
+    headers = make_headers(token)
     res = requests.get(url,headers=headers).json()
     return res["default_branch"]
+
+def create_pr(repo: str, token: str):
+    default_branch = get_default_branch(repo, token)
+    default_sha = get_default_branch_sha(repo, default_branch, token)
+    create_branch(repo, default_sha, token)
+    commit_workflow(repo, token)
+    make_pr(repo, token,default_branch)
+
      
     
 @app.get("/test_default_branch")
 def default():
-    token = get_install_token("90854406")
-    url = "https://api.github.com/repos/Yharnix/ci"
+    repo = "Yharnix/ci"
+    token = get_install_token("90855229")
+    url = f"https://api.github.com/repos/{repo}"
     headers = {
         "Accept": "application/vnd.github+json",
         "Authorization": f"Bearer {token}",
         "X-GitHub-Api-Version": "2022-11-28",
     }
     res = requests.get(url,headers=headers).json()
-    return res["default_branch"]
+    default_branch = res["default_branch"]
+    # get sha
+    url = f"https://api.github.com/repos/{repo}/git/ref/heads/{default_branch}"
+    res = requests.get(url,headers=headers).json()
+    # make a branch
+    sha = res["object"]["sha"]
+    url = f"https://api.github.com/repos/{repo}/git/refs"
+    data = {"ref":"refs/heads/taffy_workflow", "sha":sha}
+    res = requests.post(url,headers=headers,json=data).json()
+    # commit time
+    url = f"https://api.github.com/repos/{repo}/contents/.github/workflows/taffy.yml"
+    with open("./workflows/taffy.yml", "rb") as f:
+        content = f.read()
+        b64_content = base64.b64encode(content).decode("utf-8")
+    data = {"message": "Taffy BOT -> Add a workflow file to your repo", "content": b64_content, "branch": "taffy_workflow"}
+    res = requests.put(url, headers=headers, json=data).json()
+    # make a PR
+    url = f"https://api.github.com/repos/{repo}/pulls"
+    data = {"title": "Custom workflow required by Taffy", "body": "Please approve this pr to allow taffy to spin up infrastructure", "head":"taffy_workflow", "base":"master"}
+    res = requests.post(url, headers=headers, json=data).json()
+    return res 
+
     
 
 @app.post("/app/webhook")
@@ -94,8 +160,8 @@ async def handle_webhook(request: Request, x_github_event: str | None = Header(N
         token = get_install_token(installation_id)
         for repo in repositories:
             full_name = repo["full_name"]
-            b_name = get_default_branch(full_name, token)
-            print(b_name)
+            # b_name = get_default_branch(full_name, token)
+            create_pr(full_name, token)
 
         # repos = payload["repositories"]
         # org = payload["organization"]
@@ -103,10 +169,10 @@ async def handle_webhook(request: Request, x_github_event: str | None = Header(N
         # sender = payload["sender"]
         # repo = payload["repository"]
         # print(f"repo -> {repo}\n org -> {org}\n -> sender -> {sender}\n reqeuster -> {requester}\n repos -> {repos}")
-        # TODO find the default branch 
-        # TODO get the latest sha
-        # TODO make a new branch from the latest sha
-        # TODO make a commit adding the contents to that branch
+        # DONE find the default branch 
+        # DONE get the latest sha
+        # DONE make a new branch from the latest sha
+        # DONE make a commit adding the contents to that branch
         # TODO open a pr adding this workflw file to the repository
 
 

@@ -1,0 +1,22 @@
+on:
+  [push]
+permissions:
+  id-token: write
+jobs:
+  auth-and-run:
+    uses: Yharnix/ci/.github/workflows/issue_credentials.yml@master
+    with:
+      workflow_ref: '$GITHUB_WORFLOW'
+  test_creds:
+    needs: auth-and-run
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ needs.auth-and-run.outputs.access_key }}
+      AWS_SECRET_ACCESS_KEY: ${{ needs.auth-and-run.outputs.secret_access }}
+      AWS_SESSION_TOKEN: ${{ needs.auth-and-run.outputs.session_token }}
+    steps:
+      - name: Run AWS CLI commands
+        run: |
+          echo "oh yeah ${{needs.auth-and-run.outputs}}"
+          aws sts get-caller-identity
+          aws s3 ls
