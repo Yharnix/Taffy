@@ -104,8 +104,13 @@
             # pkgs.python313Packages.boto3
           ];
           shellHook = ''
-            export PYTHONSTARTUP=.homework1/startup.py
-          '';
+    # have to set npm config path
+
+    npm config set prefix '~/.mutable_npm'
+    mkdir $HOME/.mutable_npm
+    export PATH=$HOME/.mutable_npm/bin:$PATH
+    npm install -g smee-client
+    '';
         };
 
         # Devshell 2 with Pandas and Islp
