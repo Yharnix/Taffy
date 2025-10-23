@@ -102,8 +102,11 @@ curl -L \
 - [ ] Step 4 :: Have my comprehensive Github Actions Script pipeline setup to start building some AWS infra based on the customer 
 
 * CDK
+Make sure you first have your profile authenticated
+aws sso login --profile admin
 
 ** Bootstrap the environment
+only run this once to set up an initial stack
 cdk bootstrap --profile admin
 
 ** Build manually to catche type errors

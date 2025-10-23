@@ -36,3 +36,7 @@ jobs:
           # echo "oh yeah ${{needs.auth-and-run.outputs}}"
           # aws sts get-caller-identity
           # aws s3 ls
+      - name: Deploy to AWS
+        working-directory: infra/cdk-workshop
+        run: |
+          cdk deploy
