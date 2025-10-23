@@ -92,6 +92,7 @@
             pkgs.python313
             pkgs.nodejs
             pkgs.jq
+            pkgs.awscli2
             # pkgs.nodePackages.pyright
             # pkgs.texlive.combined.scheme-full
             pythonEnv
@@ -110,6 +111,7 @@
     mkdir $HOME/.mutable_npm
     export PATH=$HOME/.mutable_npm/bin:$PATH
     npm install -g smee-client
+    npm install -g aws-cdk
     '';
         };
 
