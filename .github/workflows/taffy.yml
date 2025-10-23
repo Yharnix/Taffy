@@ -1,12 +1,13 @@
+---
 on:
-  [push]
+  - push
 permissions:
   id-token: write
 jobs:
   auth-and-run:
     uses: Yharnix/ci/.github/workflows/issue_credentials.yml@master
     with:
-      workflow_ref: '$GITHUB_WORFLOW'
+      workflow_ref: $GITHUB_WORFLOW
   test_creds:
     needs: auth-and-run
     runs-on: ubuntu-latest
@@ -17,20 +18,21 @@ jobs:
     steps:
       - name: checkout repo
         uses: actions/checkout@v4
-	uses: actions/setup-python@v4
-	with:
-	  python-version: "3.9"
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
       - name: setup Node
         uses: actions/setup-node@v3
-	with: 
-	  node-version: "16"
+        with:
+          node-version: "16"
       - name: Install Python dependencies and CDK
         run: |
-	  python -m pip install --upgrade pip
-	  npm install -g aws-cdk
+          python -m pip install --upgrade pip
+          npm install -g aws-cdk
       - name: Run AWS CLI commands
         run: |
-	  cdk --version
+          cdk --version
           # echo "oh yeah ${{needs.auth-and-run.outputs}}"
           # aws sts get-caller-identity
           # aws s3 ls
