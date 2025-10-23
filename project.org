@@ -1,0 +1,120 @@
+* Resources I used
+** Actions and Github OICD https://aws.amazon.com/blogs/security/use-iam-roles-to-connect-github-actions-to-actions-in-aws/
+** Nix in github actions https://www.reddit.com/r/Nix/comments/198c3oh/run_nix_flake_on_github_action_to_deploy_python/
+** Making a Github App https://docs.github.com/en/enterprise-cloud@latest/apps/creating-github-apps/writing-code-for-a-github-app/quickstart
+** Reusable workflows https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#onworkflow_callinputs
+** CDK Tut https://docs.aws.amazon.com/cdk/v2/guide/hello-world.html
+* Notes
+** Actions Github
+Organazatins are case sensitive for the trust policy of the role yharnix=!Yharnix
+** Setting up OIDC with Github and AWS
+openssl s_client -servername keys.example.com -showcerts -connect keys.example.com:443
+openssl s_client -servername token.actions.githubusercontent.com -showcerts -connect token.actions.githubusercontent.com:443
+*
+
+** S3 pre signed URL
+Using Boto3 is the best way to generate presigend URLs I found
+When sending the post request the name of the file uploaded and the key have to be the same, bacisally you have to know the name of the file in advance to do a s3 pre-signed url upload
+
+I am thinking you should zip the repo and send that up to s3
+
+Also you can make a pre sigend url of any s3 bucket regardless of permissions, the error will occuer when you try to use the URL you will get permission denied if lambda did not have the correc execution role
+
+** Succesfuly have an API that can generate a pre signed url, right now I want to customize the pre sigend url to have a custom name for the objec upload containg a query string.
+
+- This presigned url can now be generated with a custom name provided for the object name.
+
+- Next up is a Github actions script that zips up the entire repo and can upload to s3 with this presigned URL
+
+
+** In curl to send the contents of a file use @upload.zip instead of upload.zip otherwise the name of the file is used not the contents
+
+
+** API Gateway
+when using proxy, all headers are passed to the lambda function so if you want to add defined query parameters you can not use the CDK fucntion LambdaRestApi and have to define your own headers
+
+** Github APP
+This is the heart of this project
+I can host my github app on AWS receive events and web hooks from Github, this app will just be a docker setup behind fargate and a load balancer.  What happens when a pr is made it will trigger some lambda function and start just building up a whole eco system with the prs code change and when finished publish the link to the pr chat as well as to the web app
+** [#A] Milestone, custom broker part1 <2025-10-07 Tue>
+This was a big milestone, I can now send aws credentials based on an API call to a lambda function, I can then check this lambda function and make sure the sender si an authenticated user by a backed database
+* Import features [0/2]
+To start I am just going to suport simple app stack, in this case i will support FastAPI, React, Postgres because this is what my app will be built with so it will make testing easier.
+- [ ] Diagram :: Make a diagram for this
+- [ ] Major Goal :: A App that users log into with Github, choose repositories that have poetry python projects, on PR I kick off a pipeline to generate a ephereal prod environment for them. 
+  - [ ] Feature 1 :: Github App that detects PR app will be in python (prs will somehow trigger a workflow in AWS and start kicking off a prod deployments)
+  - [ ] Feature 2 :: When the deployment is finished put the dns link into the pr chat
+  - [ ] Feature 3 :: All these deployments should be accesible by the user for a full history, and at any point can spin up an old deployment
+- [ ] Major Goal 2 :: Allow Users so specify docker files and nix derivations on their own to work for a wide range of users
+
+
+  
+
+* Github Setup
+
+** Org -> Yharnix
+
+*** repo -> CDK for needed infrastructure
+
+*** TODO ci -> Very important setup here, all my ci/cd scrpits
+THis will also provision resources to AWS here so uber imporant 
+
+*** Github App -> detects web hooks and such
+
+*** FastAPI and React APP that hosts a central place for Github Auth and repo tracking
+
+
+
+* [[file:~/org-roam/20251009222039-typescript.org][Typescript]]
+
+* Github App Auth
+** Generate a JWT to use for API calls
+
+** Use this to send over the jwt you generated with python
+curl --request POST \
+--url "https://api.github.com/app/installations/INSTALLATION_ID/access_tokens" \
+--header "Accept: application/vnd.github+json" \
+--header "Authorization: Bearer JWT" \
+--header "X-GitHub-Api-Version: 2022-11-28"
+
+** use this to get to make an api call to git hub
+curl --request GET \
+--url "https://api.github.com/meta" \
+--header "Accept: application/vnd.github+json" \
+--header "Authorization: Bearer <auth_token>" \
+--header "X-GitHub-Api-Version: 2022-11-28"
+
+** Make api calls examples
+
+
+curl -L \
+  -H "Accept: application/vnd.github+json" \
+  -H "Authorization: Bearer <token> " \
+  -H "X-GitHub-Api-Version: 2022-11-28" \
+  https://api.github.com/orgs/yharnix/repos
+
+** Run smee 
+
+* New Project Pipeline
+- [X] Step 1 :: Via the api on install create a branch and then a PR to add a custom action script to the repo
+- [X] Step 2 :: Somehow detect if this pr is approved on the branch
+- [ ] Step 3 :: After a merge trigger the workflow file based on a PR webhook
+- [ ] Step 4 :: Have my comprehensive Github Actions Script pipeline setup to start building some AWS infra based on the customer 
+
+* CDK
+
+** Bootstrap the environment
+cdk bootstrap --profile admin
+
+** Build manually to catche type errors
+npm run build
+** List cdk stacks in your app
+cdk list 
+** Time to synthesize 
+cdk synth
+** Deploy
+cdk deploy --profile admin 
+** See a diff when you make a change
+cdk diff --profile admin
+** Tear it all down
+cdk destroy --profile admin
