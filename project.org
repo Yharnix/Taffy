@@ -121,3 +121,5 @@ cdk deploy --profile admin
 cdk diff --profile admin
 ** Tear it all down
 cdk destroy --profile admin
+
+** CDK needs access to ssm:parameter_store and s3
