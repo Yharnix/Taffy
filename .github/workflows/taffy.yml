@@ -39,4 +39,10 @@ jobs:
       - name: Deploy to AWS
         working-directory: infra/cdk-workshop
         run: |
-          cdk deploy
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi 
+          cdk deploy --require-approval=never
+          
