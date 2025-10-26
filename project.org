@@ -123,3 +123,57 @@ cdk diff --profile admin
 cdk destroy --profile admin
 
 ** CDK needs access to ssm:parameter_store and s3
+* Model my github after this guy
+https://github.com/rjones18
+
+
+
+About the job
+
+Overview:
+
+ At Blankfactor, we’re looking for a skilled and proactive AWS DevOps Engineer to join our growing team. In this role, you’ll be responsible for building and maintaining cloud infrastructure, automation pipelines, and deployment strategies to support high-performance applications. You’ll work closely with engineering teams to streamline development workflows and ensure system reliability, scalability, and security.
+
+Key Responsibilities:
+
+    Design, implement, and manage scalable AWS infrastructure using Infrastructure as Code (IaC) tools like Terraform or CloudFormation
+    Build and maintain CI/CD pipelines to enable efficient, reliable software delivery
+    Monitor systems and troubleshoot issues in production and development environments
+    Implement and enforce security best practices, including identity and access management, encryption, and network protection
+    Automate operational tasks and deployments to improve speed and efficiency
+    Collaborate with developers, architects, and QA to ensure seamless integration and delivery
+    Support disaster recovery planning, cost optimization, and performance tuning
+
+Qualifications:
+
+    4+ years of experience in DevOps or cloud engineering roles
+    Strong hands-on experience with AWS services (EC2, ECS, EKS, Lambda, S3, RDS, etc.)
+    Proficiency in Infrastructure as Code tools, preferably Terraform
+    Experience with CI/CD tools such as Jenkins, GitHub Actions, GitLab CI, or CircleCI
+    Scripting skills with Python, Bash, or similar
+    Solid understanding of networking, security principles, and monitoring tools (e.g., CloudWatch, Prometheus, Grafana)
+    Experience with Docker and container orchestration tools like Kubernetes is a plus
+    Excellent communication and collaboration skills
+    English level: B2+ or higher
+
+Nice to Have:
+
+    AWS Certifications (e.g., AWS Certified DevOps Engineer – Professional)
+    Experience in regulated environments (e.g., fintech, healthcare)
+    Familiarity with observability stacks and logging tools (ELK, Datadog, etc.)
+
+
+
+I am looking for a role for a role for DevOps, In my internship I provided great valuet to my team by being the only one versed in Gitlab CI/CD and helped streamline the conversion of Jenkins to Gitlab CI/CD.  I recentrly got my AWS SAA ceart and I am actively backing up this cert with AWS work every day I have a project I am working on the involves spinning up ephemeral testing environments whenever PRS are made in a github repos, this involes many AWS services and I am learning so much, I just applied to the DevOps engineer positons, I would love to chat with you and maybe hear about your experience in the Industry as a Senior Devops engineer at Blankfactor, I am a scrappy and quick an although I do not meet everything in the job descripiton I will learn quick    
+
+
+* Apps out
+
+[CockRoachDB](https://www.cockroachlabs.com/careers/jobs/?gh_jid=6836554)
+[HunterBond](https://www.linkedin.com/jobs/search-results/?currentJobId=4317243042&eBP=CwEAAAGaGEpWgjxk8zjx82Z4tInKMfCYpflEAAGyRLTPDhtRq9YwLcSMVRu-8DXszUGk6QNzMEvGohheEzwe0wRClJKrbx8H-pE1o4XFiXsQh7NZg8EUVNW55KjPpr191ChrWFcvoaVSJ9RdOzADGxrGNkdeHSadaMHjHNrFXAjUmfpBK3VWhRSPLCnVQlU_Fgt5f5Dha-h1-kOsTxb5OULanFH3EOVycP35KN71W2EBSDbzlzNEC7O4xirpXrs5sa-k_vjyTsewcECQ2a7EnClNA2w4CcpSBzMzW_X5uEzLRuQBNLiJ2z61BBDskwGTRVNIHmfho4ojX2_ItdE_uJLEsbqgREdp5-GCItQoJOWbmGVRJLKvIQ6lcrTkRqSDh9872nD5fcxgwpoM1p7SQVyvVGaC1oNDiT8RfHp1PTDIdHkx5Rba--8Ck2GtLUEbfc12z7MMxwhqFuyKKWoHJdpYd4HtQ9wlDTeWjRqJYnJnkxLyuprDzX5VATHXEUMjK15CXAm_&f_TPR=r86400&keywords=devops&origin=JOB_COLLECTION_PAGE_SEARCH_BUTTON&refId=2GZE8J9VqycHstCH9IeTEg%3D%3D&trackingId=0pHTk15c3TeU3Byz7i%2FsdQ%3D%3D)
+[Genesis10](https://www2.jobdiva.com/portal/?a=48jdnwfh8vhzflv7zcdp76mde2du7o006c79o0fir46s6a2nlffdcojc2myqww0k&compid=-1#/jobs/26566610?jobtitle=Software+Developer)
+[Plaid](https://jobs.lever.co/plaid/2b9a141e-0669-4197-aa52-2b07d9fadc96/apply?lever-origin=applied&lever-source=LinkedInPaid)
+[Colgate](https://jobs.colgate.com/job/Platform-Engineer/169381-en_US)
+
+Reached out to senior technical recruiter at Genesis10 [Patrick Fox](https://www.linkedin.com/in/patrick-fox-251605116/)
+Emailed Gregory Job, previouse contact I have that works at Colgate

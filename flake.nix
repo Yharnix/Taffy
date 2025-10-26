@@ -68,24 +68,46 @@
   inputs = {
     # nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
-    nixgl.url = "github:guibou/nixGL";
-    nixgl.inputs.nixpkgs.follows = "nixpkgs";
+    poetry2nix = {
+        url = "github:nix-community/poetry2nix";
+        inputs.nixpkgs.follows = "nixpkgs";
+    };
+    flake-utils = {
+        url = "github:numtide/flake-utils";
+        inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
+  
 
-  outputs = { self, nixpkgs, nixgl }: {
+  outputs = { self, nixpkgs, flake-utils, poetry2nix }: 
+        flake-utils.lib.eachDefaultSystem (system: 
+          let
+          pkgs = nixpkgs.legacyPackages.${system};
+          inherit (poetry2nix.lib.mkPoetry2Nix { inherit pkgs; })
+            mkPoetryApplication
+            mkPoetryEnv
+            defaultPoetryOverrides
+          ;
+           poetryDev = mkPoetryEnv {
+             projectDir = self;
+             # overrides = p2n-overrides;
+           };
+          in 
+            {
+
     devShells = {
-      x86_64-linux = let
-        pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        pythonEnv = pkgs.python313.withPackages (ps: [
-          ps.fastapi
-          ps.requests
-          ps.pyjwt          # PyJWT
-          ps.cryptography   # enables RS256 support in PyJWT
-          ps.python-dotenv
-          ps.fastapi-cli
-          ps.boto3
-        ]);
-      in {
+      # x86_64-linux = let
+      #   pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      #   pythonEnv = pkgs.python313.withPackages (ps: [
+      #     ps.fastapi
+      #     ps.requests
+      #     ps.pyjwt          # PyJWT
+      #     ps.cryptography   # enables RS256 support in PyJWT
+      #     ps.python-dotenv
+      #     ps.fastapi-cli
+      #     ps.boto3
+      #   ]);
+      # in {
         # Devshell 1 with NumPy and Matplotlib
         default = pkgs.mkShell {
           buildInputs = [
@@ -93,9 +115,11 @@
             pkgs.nodejs
             pkgs.jq
             pkgs.awscli2
+            pkgs.poetry
+            poetryDev
             # pkgs.nodePackages.pyright
             # pkgs.texlive.combined.scheme-full
-            pythonEnv
+            # pythonEnv
             # pkgs.python313Packages.fastapi
             # pkgs.python313Packages.requests
             # pkgs.python313Packages.pyjwt
@@ -115,8 +139,9 @@
     '';
         };
 
+        };
+    
+      });
+
         # Devshell 2 with Pandas and Islp
-      };
-    };
-  };
 }
