@@ -1,0 +1,6 @@
+requests
+fastapi[standard]
+pyjwt
+boto3
+python-dotenv
+cryptography

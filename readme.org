@@ -36,3 +36,8 @@ curl -sS -X PUT \
     \"content\": \"${CONTENT_B64}\",
     \"branch\": \"${NEW_BRANCH}\"
   }"
+
+  
+* Path
+
+PRIVATE_KEY_PATH="/home/malcolm/Projects/devlaunch/Taffy/taffy-app.2025-10-18.private-key.pem"
