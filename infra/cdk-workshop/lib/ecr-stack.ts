@@ -6,10 +6,12 @@ import { aws_ecr as ecr } from 'aws-cdk-lib';
 // NOTE Should probally make a restrictions on who can push and pull
 
 export class EcrStack extends Stack {
+  public readonly repository: ecr.Repository
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
     const repository = new ecr.Repository(this, 'Repo', {
       repositoryName: 'taffy-images'
     })
+    this.repository = repository
   }
 }
