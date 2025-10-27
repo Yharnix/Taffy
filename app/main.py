@@ -122,41 +122,6 @@ def installed_app():
     return r.json()
      
     
-@app.get("/test_default_branch")
-def default():
-    repo = "Yharnix/ci"
-    token = get_install_token("90855229")
-    url = f"https://api.github.com/repos/{repo}"
-    headers = {
-        "Accept": "application/vnd.github+json",
-        "Authorization": f"Bearer {token}",
-        "X-GitHub-Api-Version": "2022-11-28",
-    }
-    res = requests.get(url,headers=headers).json()
-    default_branch = res["default_branch"]
-    # get sha
-    url = f"https://api.github.com/repos/{repo}/git/ref/heads/{default_branch}"
-    res = requests.get(url,headers=headers).json()
-    # make a branch
-    sha = res["object"]["sha"]
-    url = f"https://api.github.com/repos/{repo}/git/refs"
-    data = {"ref":"refs/heads/taffy_workflow", "sha":sha}
-    res = requests.post(url,headers=headers,json=data).json()
-    # commit time
-    url = f"https://api.github.com/repos/{repo}/contents/.github/workflows/taffy.yml"
-    with open("./workflows/taffy.yml", "rb") as f:
-        content = f.read()
-        b64_content = base64.b64encode(content).decode("utf-8")
-    data = {"message": "Taffy BOT -> Add a workflow file to your repo", "content": b64_content, "branch": "taffy_workflow"}
-    res = requests.put(url, headers=headers, json=data).json()
-    # make a PR
-    url = f"https://api.github.com/repos/{repo}/pulls"
-    data = {"title": "Custom workflow required by Taffy", "body": "Please approve this pr to allow taffy to spin up infrastructure", "head":"taffy_workflow", "base":"master"}
-    res = requests.post(url, headers=headers, json=data).json()
-    return res 
-
-    
-
 @app.post("/app/webhook")
 async def handle_webhook(request: Request, x_github_event: str | None = Header(None, convert_underscores=False)):
     payload = await request.json()
