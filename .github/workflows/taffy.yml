@@ -23,28 +23,32 @@ jobs:
           aws s3 ls
   build-image:
     uses: Yharnix/ci/.github/workflows/docker_build.yml@master
-  push-image:
-    needs:
-      - auth-and-run
-      - build-image
-    runs-on: ubuntu-latest
-    env:
-      AWS_ACCESS_KEY_ID: ${{ needs.auth-and-run.outputs.access_key }}
-      AWS_SECRET_ACCESS_KEY: ${{ needs.auth-and-run.outputs.secret_access }}
-      AWS_SESSION_TOKEN: ${{ needs.auth-and-run.outputs.session_token }}
-      AWS_REGION: us-east-1
-      ACCOUNT_ID: "037444031381"
-      REPO: taffy-images
-      IMAGE_TAG: ${{ github.sha }}
-    steps:
-      - uses: actions/checkout@v4
-      - name: Login to ECR
-        run: >
-          aws ecr get-login-password --region "$AWS_REGION" \
+  # push-image:
+  #   needs:
+  #     - auth-and-run
+  #     - build-image
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     AWS_ACCESS_KEY_ID: ${{ needs.auth-and-run.outputs.access_key }}
+  #     AWS_SECRET_ACCESS_KEY: ${{ needs.auth-and-run.outputs.secret_access }}
+  #     AWS_SESSION_TOKEN: ${{ needs.auth-and-run.outputs.session_token }}
+  #     AWS_REGION: us-east-1
+  #     ACCOUNT_ID: "037444031381"
+  #     REPO: taffy-images
+  #     IMAGE_TAG: ${{ github.sha }}
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Login to ECR
+  #       run: >
+  #         aws ecr get-login-password --region "$AWS_REGION" \
 
-          | docker login --username AWS --password-stdin "$ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com"
-      - name: Push to taffy-images
-        run: |
-          ECR_URI="$ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/taffy-images"
-          docker tag my-app:"$IMAGE_TAG" "$ECR_URL:$IMAGE_TAG"
-          docker push "$ECR_URL:$IMAGE_TAG"
+  #         | docker login --username AWS --password-stdin "$ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com"
+  #     - name: Push to taffy-images
+  #       run: |
+  #         ECR_URI="$ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/taffy-images"
+  #         docker tag my-app:"$IMAGE_TAG" "$ECR_URI:$IMAGE_TAG"
+  #         docker push "$ECR_URI:$IMAGE_TAG"
+
+
+
+
