@@ -205,3 +205,6 @@ I am looking for a role for a role for DevOps, In my internship I provided great
   build_image:
     uses: Yharnix/ci/.github/workflows/docker_build.yml@master 
           
+
+* Security
+- [ ] ECR :: ECR must not allow tag overwriting, explitly state not allowing mutable tag uploads

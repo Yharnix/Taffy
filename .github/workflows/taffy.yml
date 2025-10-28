@@ -5,7 +5,7 @@ permissions:
   id-token: write
 jobs:
   auth-and-run:
-    uses: Yharnix/ci/.github/workflows/issue_credentials.yml@master
+    uses: Yharnix/ci/.github/workflows/issue_ecr_creds.yml@master
     with:
       workflow_ref: $GITHUB_WORFLOW
   test_creds:
@@ -22,4 +22,10 @@ jobs:
           aws sts get-caller-identity
           aws s3 ls
   build_image:
-    uses: Yharnix/ci/.github/workflows/docker_build.yml@master 
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Build docker image"
+	uses: Yharnix/ci/.github/workflows/docker_build.yml@master 
+      - name: "upload to ecr repo"
+        run: aws ecr get-login-password --region us-east-1 \
+          | docker login --username AWS --password-stdin 037444031381.dkr.ecr.us-east-1.amazonaws.com
