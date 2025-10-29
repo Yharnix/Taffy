@@ -1,0 +1,57 @@
+---
+on:
+  workflow_call:
+    inputs:
+      repo:
+        required: false
+        type: string
+      user:
+        required: false
+        type: string
+      pr:
+        required: false
+        type: string
+    outputs:
+      image:
+        value: ${{jobs.test-oidc.outputs.access_key}}
+permissions:
+  id-token: write
+jobs:
+  auth:
+    uses: Yharnix/ci/.github/workflows/issue_ecr_creds.yml@master
+    with:
+      workflow_ref: $GITHUB_WORFLOW
+  build-image:
+    needs:
+      - auth
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+      - name: setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+      - name: Install Python dependencies and CDK
+        run: |
+          python -m pip install --upgrade pip
+          npm install -g aws-cdk
+      - name: Run AWS CLI commands
+        run: |
+          cdk --version
+          # echo "oh yeah ${{needs.auth-and-run.outputs}}"
+          # aws sts get-caller-identity
+          # aws s3 ls
+      - name: Deploy to AWS
+        working-directory: infra/cdk-workshop
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi 
+          cdk synth EcrStack --require-approval=never

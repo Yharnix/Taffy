@@ -23,6 +23,8 @@ jobs:
           aws s3 ls
   build-image:
     uses: Yharnix/ci/.github/workflows/docker_build.yml@master
+  synth:
+    uses: Yharnix/Taffy/.github/workflows/cdk.yml@cdk
   # push-image:
   #   needs:
   #     - auth-and-run
