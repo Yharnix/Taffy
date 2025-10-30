@@ -13,6 +13,7 @@ import requests
 import time
 
 load_dotenv()
+print("PRIVATE_KEY_PATH:", os.getenv("PRIVATE_KEY_PATH"))
 app_id = os.getenv('APP_ID')
 webhook_secret = os.getenv('WEBHOOK_SECRET')
 app = FastAPI()
@@ -126,6 +127,10 @@ def installed_app():
 async def handle_webhook(request: Request, x_github_event: str | None = Header(None, convert_underscores=False)):
     payload = await request.json()
     event = request.headers.get("X-Github-Event")
+    if event == "workflow_run":
+        action = payload.get("action")
+        if action == "completed":
+            print("Workflow completed")
     if event == "installation" and payload.get("action") == "created":
         print("New app installed can now begin branch creation, pr making and workflow file install")
         installation_id = payload["installation"]["id"]
