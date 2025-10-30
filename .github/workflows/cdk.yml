@@ -54,4 +54,4 @@ jobs:
           else
             npm install
           fi 
-          cdk synth EcrStack --require-approval=never
+          cdk synth LambdaStack --require-approval=never

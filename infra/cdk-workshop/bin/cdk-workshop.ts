@@ -3,6 +3,7 @@ import * as cdk from 'aws-cdk-lib';
 import { CdkWorkshopStack } from '../lib/cdk-workshop-stack';
 import { EcrStack } from '../lib/ecr-stack';
 import { VpcStack } from '../lib/vpc-stack';
+import { LambdaStack } from '../lib/lambda-api';
 
 const app = new cdk.App();
 new CdkWorkshopStack(app, 'CdkWorkshopStack', {
@@ -28,5 +29,11 @@ const ecr_stack = new EcrStack(app, 'EcrStack', {
 new VpcStack(app, 'VpcStack', {
   env: { account: '037444031381', region: 'us-east-1' },
   repository: ecr_stack.repository
+})
+
+const env = { account: '037444031381', region: 'us-east-1' }
+
+new LambdaStack(app, 'LambdaStack', {
+    env: env,
 })
 
