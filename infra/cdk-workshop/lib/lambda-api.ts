@@ -26,3 +26,4 @@ export class LambdaStack extends Stack {
     })
   }
 }
+
