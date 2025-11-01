@@ -127,6 +127,7 @@ def installed_app():
 async def handle_webhook(request: Request, x_github_event: str | None = Header(None, convert_underscores=False)):
     payload = await request.json()
     event = request.headers.get("X-Github-Event")
+    # NOTE This works, I can detect when the whole process compeltes
     if event == "workflow_run":
         action = payload.get("action")
         if action == "completed":
