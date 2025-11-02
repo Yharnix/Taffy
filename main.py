@@ -11,6 +11,7 @@ import os
 import jwt
 import requests 
 import time
+import boto3
 
 load_dotenv()
 app_id = os.getenv('APP_ID')
