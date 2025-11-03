@@ -4,6 +4,7 @@ import { CdkWorkshopStack } from '../lib/cdk-workshop-stack';
 import { EcrStack } from '../lib/ecr-stack';
 import { VpcStack } from '../lib/vpc-stack';
 import { LambdaStack } from '../lib/lambda-api';
+import { EcsTaskStack } from '../lib/ecs-task';
 
 const app = new cdk.App();
 new CdkWorkshopStack(app, 'CdkWorkshopStack', {
@@ -37,3 +38,7 @@ new LambdaStack(app, 'LambdaStack', {
     env: env,
 })
 
+
+new EcsTaskStack(app, 'TaskStack', {
+    env: env,
+})

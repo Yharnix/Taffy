@@ -9,6 +9,9 @@ export class EcrStack extends Stack {
   public readonly repository: ecr.Repository
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
+    const personal_repo = new ecr.Repository(this, 'PersonalRepo', {
+      repositoryName: 'taffy-prod-images'
+    })
     const repository = new ecr.Repository(this, 'Repo', {
       repositoryName: 'taffy-images'
     })
