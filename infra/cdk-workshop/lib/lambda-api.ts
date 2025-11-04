@@ -1,5 +1,3 @@
-
-
 // Importing necessary AWS CDK modules and constructs
 import { Duration, Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
@@ -14,7 +12,7 @@ export class LambdaStack extends Stack {
     const paramValue = ssm.StringParameter.valueFromLookup(this, '/taffy/goofy-string')
     const fn = new lambda.Function(this, 'MyFunction', {
       code: lambda.Code.fromAsset('lib/lambda-handler'),
-      runtime: lambda.Runtime.NODEJS_LATEST,
+      runtime: lambda.Runtime.PYTHON_3_11,
       handler: 'index.handler',
       environment: {
         PARAM_VALUE: paramValue
@@ -22,7 +20,7 @@ export class LambdaStack extends Stack {
     });
     const endpoint = new apigw.LambdaRestApi(this, 'MyEndpoint', {
 	handler: fn,
-	restApiName: "Hello Api"
+	restApiName: "TaskRunnerApi"
     })
   }
 }
