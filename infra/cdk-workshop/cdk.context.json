@@ -57,5 +57,8 @@
         ]
       }
     ]
-  }
+  },
+  "ssm:account=037444031381:parameterName=/taffy/taskdef_arn:region=us-east-1": "arn:aws:ecs:us-east-1:037444031381:task-definition/TaskStackTD914A46F5:3",
+  "ssm:account=037444031381:parameterName=/taffy/cluster:region=us-east-1": "arn:aws:ecs:us-east-1:037444031381:cluster/TaskStack-FargateCluster7CCD5F93-UDIGTsJ2VtQw",
+  "ssm:account=037444031381:parameterName=/taffy/vpc/public-subnets:region=us-east-1": "subnet-0a286cb042d8b566c,subnet-022e98c6990d290d2,subnet-06f277fc2ea592e8d"
 }

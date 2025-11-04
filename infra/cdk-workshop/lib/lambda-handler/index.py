@@ -1,3 +1,4 @@
+import boto3
 import json
 import os
 
@@ -10,6 +11,8 @@ def handler(event, context):
     query_params = event.get('queryStringParameters')
     body = event.get('body')
 
+    ecs = boto3.client('ecs', region_name="us-east-1")
+
     response = {
         "resource": resource,
         "path": path,
@@ -18,15 +21,29 @@ def handler(event, context):
         "queryStringParameters": query_params,
         "body": body
     }
-    subnet = os.environ('SUBNET_ID')
-    task = os.environ('TASK_ARN')
-    cluser = os.environ('CLUSTER_ARN')
+    subnet = os.environ.get('PUBLIC_SUBNETS').split(',')[0]
+    task = os.environ.get('TASK_ARN')
+    cluster_arn = os.environ.get('CLUSTER_ARN')
 
     # Build and return API Gateway–style response
+
+    response = ecs.run_task(
+        cluster=cluster_arn,
+        taskDefinition=task,
+        launchType='FARGATE',
+        networkConfiguration={
+            'awsvpcConfiguration': {
+                'subnets': [subnet],
+                'assignPublicIp': 'ENABLED'
+            }
+        }
+    )
     return {
         "statusCode": 200,
         "body": json.dumps({
-            "message": f"Parameter value baked in: {os.environ.get('PARAM_VALUE')}",
+            "subnets": f"subnets: {subnet}",
+            "tasks": f"task: {task}",
+            "clusters": f"cluster_arn: {cluster_arn}",
             # "debug": response  # uncomment if you want to see the event details
         })
     }

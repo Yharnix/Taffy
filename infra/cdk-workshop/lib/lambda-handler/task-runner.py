@@ -16,5 +16,6 @@ aws ecs run-task \
 
 CLUSTER = arn:aws:ecs:us-east-1:037444031381:cluster/TaskStack-FargateCluster7CCD5F93-UDIGTsJ2VtQw
 TAKSK_ID = arn:aws:ecs:us-east-1:037444031381:task-definition/TaskStackTD914A46F5:3
+arn:aws:ecs:us-east-1:037444031381:cluster/VpcStack-MyCluster4C1BA579-VJoglMOQcmcP
 
 subnet = subnet-0f249fd29b5668fea

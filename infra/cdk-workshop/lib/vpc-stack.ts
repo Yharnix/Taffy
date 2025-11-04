@@ -18,6 +18,7 @@ interface VpcStackProps extends StackProps {
 }
 
 export class VpcStack extends Stack {
+  readonly vpc: ec2.Vpc;
   constructor(scope: Construct, id: string, props: VpcStackProps) {
     super(scope, id, props);
     const { repository } = props;
@@ -29,10 +30,13 @@ export class VpcStack extends Stack {
     const vpc = new ec2.Vpc(this, "MyVpc", {
       maxAzs: 3 // Default is all AZs in region
     });
+    this.vpc = vpc
 
     const cluster = new ecs.Cluster(this, "MyCluster", {
       vpc: vpc
     });
+    
+
     
     new ssm.StringParameter(this, 'Parameter', {
 	allowedPattern: '.*',

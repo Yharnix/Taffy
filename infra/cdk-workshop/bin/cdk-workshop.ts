@@ -27,7 +27,7 @@ const ecr_stack = new EcrStack(app, 'EcrStack', {
   env: { account: '037444031381', region: 'us-east-1' },
 })
 
-new VpcStack(app, 'VpcStack', {
+const vpc_stack = new VpcStack(app, 'VpcStack', {
   env: { account: '037444031381', region: 'us-east-1' },
   repository: ecr_stack.repository
 })
@@ -40,5 +40,6 @@ new LambdaStack(app, 'LambdaStack', {
 
 
 new EcsTaskStack(app, 'TaskStack', {
+    vpc: vpc_stack.vpc, 
     env: env,
 })
