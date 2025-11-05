@@ -13,6 +13,7 @@ export class LambdaStack extends Stack {
     const public_subnets = ssm.StringParameter.valueFromLookup(this, '/taffy/vpc/public-subnets')
     const task_arn = ssm.StringParameter.valueFromLookup(this, '/taffy/taskdef_arn')
     const cluster_arn = ssm.StringParameter.valueFromLookup(this, '/taffy/cluster')
+    const security_group = ssm.StringParameter.valueFromLookup(this, '/taffy/security_group_fargate')
     const fn = new lambda.Function(this, 'MyFunction', {
       code: lambda.Code.fromAsset('lib/lambda-handler'),
       runtime: lambda.Runtime.PYTHON_3_11,
@@ -20,7 +21,8 @@ export class LambdaStack extends Stack {
       environment: {
         CLUSTER_ARN: cluster_arn,
         TASK_ARN: task_arn,
-        PUBLIC_SUBNETS: public_subnets
+        PUBLIC_SUBNETS: public_subnets,
+	SECURITY_GROUP: security_group
       },
     });
     fn.addToRolePolicy(new iam.PolicyStatement({

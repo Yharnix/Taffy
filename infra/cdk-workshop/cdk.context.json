@@ -7,58 +7,8 @@
     "us-east-1e",
     "us-east-1f"
   ],
-  "ssm:account=037444031381:parameterName=/taffy/goofy-string:region=us-east-1": "What up goofy",
-  "vpc-provider:account=037444031381:filter.isDefault=true:region=us-east-1:returnAsymmetricSubnets=true": {
-    "vpcId": "vpc-0afb6501eb4abf28f",
-    "vpcCidrBlock": "172.31.0.0/16",
-    "ownerAccountId": "037444031381",
-    "availabilityZones": [],
-    "subnetGroups": [
-      {
-        "name": "Public",
-        "type": "Public",
-        "subnets": [
-          {
-            "subnetId": "subnet-0472e9cdde7a139c0",
-            "cidr": "172.31.32.0/20",
-            "availabilityZone": "us-east-1a",
-            "routeTableId": "rtb-062e7bdab6a12c0e5"
-          },
-          {
-            "subnetId": "subnet-0f249fd29b5668fea",
-            "cidr": "172.31.0.0/20",
-            "availabilityZone": "us-east-1b",
-            "routeTableId": "rtb-062e7bdab6a12c0e5"
-          },
-          {
-            "subnetId": "subnet-050e8bffc85b12355",
-            "cidr": "172.31.80.0/20",
-            "availabilityZone": "us-east-1c",
-            "routeTableId": "rtb-062e7bdab6a12c0e5"
-          },
-          {
-            "subnetId": "subnet-081429e02580434f2",
-            "cidr": "172.31.16.0/20",
-            "availabilityZone": "us-east-1d",
-            "routeTableId": "rtb-062e7bdab6a12c0e5"
-          },
-          {
-            "subnetId": "subnet-08276aa44494bdf94",
-            "cidr": "172.31.48.0/20",
-            "availabilityZone": "us-east-1e",
-            "routeTableId": "rtb-062e7bdab6a12c0e5"
-          },
-          {
-            "subnetId": "subnet-0e7691d15c6f94994",
-            "cidr": "172.31.64.0/20",
-            "availabilityZone": "us-east-1f",
-            "routeTableId": "rtb-062e7bdab6a12c0e5"
-          }
-        ]
-      }
-    ]
-  },
-  "ssm:account=037444031381:parameterName=/taffy/taskdef_arn:region=us-east-1": "arn:aws:ecs:us-east-1:037444031381:task-definition/TaskStackTD914A46F5:3",
-  "ssm:account=037444031381:parameterName=/taffy/cluster:region=us-east-1": "arn:aws:ecs:us-east-1:037444031381:cluster/TaskStack-FargateCluster7CCD5F93-UDIGTsJ2VtQw",
-  "ssm:account=037444031381:parameterName=/taffy/vpc/public-subnets:region=us-east-1": "subnet-0a286cb042d8b566c,subnet-022e98c6990d290d2,subnet-06f277fc2ea592e8d"
+  "ssm:account=037444031381:parameterName=/taffy/vpc/public-subnets:region=us-east-1": "subnet-03c45a769e25292a7,subnet-0b167e8d44411c221,subnet-0c5a2f16faa21746c",
+  "ssm:account=037444031381:parameterName=/taffy/taskdef_arn:region=us-east-1": "arn:aws:ecs:us-east-1:037444031381:task-definition/TaskStackTD914A46F5:4",
+  "ssm:account=037444031381:parameterName=/taffy/cluster:region=us-east-1": "arn:aws:ecs:us-east-1:037444031381:cluster/TaskStack-FargateCluster7CCD5F93-6QUbub3sNLry",
+  "ssm:account=037444031381:parameterName=/taffy/security_group_fargate:region=us-east-1": "sg-0dec959341e3ad8e2"
 }

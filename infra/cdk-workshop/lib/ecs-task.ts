@@ -28,7 +28,6 @@ export class EcsTaskStack extends Stack {
 	memoryMiB: '512',
 	cpu: '256',
 	compatibility: ecs.Compatibility.FARGATE,
-	securityGroups: [sg]
     });
     // Task definiton needs permissions to pull from ECR
     taskDefinition.addToExecutionRolePolicy(new iam.PolicyStatement({
@@ -50,6 +49,12 @@ export class EcsTaskStack extends Stack {
       logGroupName: '/ecs/my-run-task',
       removalPolicy: RemovalPolicy.DESTROY,
     });   
+
+    new ssm.StringParameter(this, 'SgParam', {
+      parameterName: '/taffy/security_group_fargate',
+      description: 'Security Group for Fargate tasks, allows all outbound',
+      stringValue: sg.securityGroupId,
+    });
 
     new ssm.StringParameter(this, 'TaskDefParam', {
       parameterName: '/taffy/taskdef_arn',

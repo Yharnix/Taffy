@@ -24,6 +24,7 @@ def handler(event, context):
     subnet = os.environ.get('PUBLIC_SUBNETS').split(',')[0]
     task = os.environ.get('TASK_ARN')
     cluster_arn = os.environ.get('CLUSTER_ARN')
+    security_group = os.environ.get('SECURITY_GROUP')
 
     # Build and return API Gateway–style response
 
@@ -34,7 +35,8 @@ def handler(event, context):
         networkConfiguration={
             'awsvpcConfiguration': {
                 'subnets': [subnet],
-                'assignPublicIp': 'ENABLED'
+                'assignPublicIp': 'ENABLED',
+                'securityGroups': [security_group],
             }
         }
     )
@@ -43,6 +45,7 @@ def handler(event, context):
         "body": json.dumps({
             "subnets": f"subnets: {subnet}",
             "tasks": f"task: {task}",
+            "sg": f"sg: {security_group}",
             "clusters": f"cluster_arn: {cluster_arn}",
             # "debug": response  # uncomment if you want to see the event details
         })
