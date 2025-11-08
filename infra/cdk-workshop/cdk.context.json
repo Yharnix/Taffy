@@ -7,8 +7,8 @@
     "us-east-1e",
     "us-east-1f"
   ],
-  "ssm:account=037444031381:parameterName=/taffy/vpc/public-subnets:region=us-east-1": "subnet-03c45a769e25292a7,subnet-0b167e8d44411c221,subnet-0c5a2f16faa21746c",
-  "ssm:account=037444031381:parameterName=/taffy/taskdef_arn:region=us-east-1": "arn:aws:ecs:us-east-1:037444031381:task-definition/TaskStackTD914A46F5:4",
-  "ssm:account=037444031381:parameterName=/taffy/cluster:region=us-east-1": "arn:aws:ecs:us-east-1:037444031381:cluster/TaskStack-FargateCluster7CCD5F93-6QUbub3sNLry",
-  "ssm:account=037444031381:parameterName=/taffy/security_group_fargate:region=us-east-1": "sg-0dec959341e3ad8e2"
+  "ssm:account=037444031381:parameterName=/taffy/vpc/public-subnets:region=us-east-1": "subnet-0bd0c1a1ae78caec8,subnet-0c33fb18ec28a4d69,subnet-051c1d3c3948ac6ec",
+  "ssm:account=037444031381:parameterName=/taffy/taskdef_arn:region=us-east-1": "arn:aws:ecs:us-east-1:037444031381:task-definition/TaskStackTD914A46F5:6",
+  "ssm:account=037444031381:parameterName=/taffy/cluster:region=us-east-1": "arn:aws:ecs:us-east-1:037444031381:cluster/TaskStack-FargateCluster7CCD5F93-Q6Hqow2XU5Vm",
+  "ssm:account=037444031381:parameterName=/taffy/security_group_fargate:region=us-east-1": "sg-0e692d41d1f2a8310"
 }

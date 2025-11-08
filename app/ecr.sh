@@ -6,6 +6,6 @@ aws ecr get-login-password --region $AWS_REGION --profile admin \
   --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
 
 
-docker tag 20b050e8d192 "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/taffy-images:latest"
+docker tag 29012d69c143 "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/taffy-images:latest"
 
 docker push "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/taffy-images:latest"

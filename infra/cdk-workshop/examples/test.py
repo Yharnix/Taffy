@@ -1,6 +1,7 @@
 import time
-print("Hello from ECS run task")
-time.sleep(1)
-print("Goodby form ECS run task")
+import os
+owner = os.getenv("OWNER")
+repo = os.getenv("REPO")
+sha = os.getenv("SHA")
+print(f"sha: {sha}, repo: {repo}, owner: {owner}")
 
-037444031381.dkr.ecr.us-east-1.amazonaws.com/taffy-prod-images:latest

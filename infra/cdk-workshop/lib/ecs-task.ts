@@ -83,11 +83,10 @@ export class EcsTaskStack extends Stack {
 
 
 
-    const containerDefinition = taskDefinition.addContainer('TheContainer', {
+    const containerDefinition = taskDefinition.addContainer('cdk-deployer', {
 	image: ecs.ContainerImage.fromEcrRepository(repo,"latest"),
 	memoryLimitMiB: 256,
 	logging: ecs.LogDriver.awsLogs({
-
           streamPrefix: 'ecs',
 	  logGroup,
         })

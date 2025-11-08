@@ -9,9 +9,18 @@ def handler(event, context):
     http_method = event.get('httpMethod')
     headers = event.get('headers')
     query_params = event.get('queryStringParameters')
+    owner = query_params.get("owner")
+    sha = query_params.get("sha")
+    repo = query_params.get("repo")
     body = event.get('body')
 
     ecs = boto3.client('ecs', region_name="us-east-1")
+    
+    env_overrides = [
+        {"name": "OWNER", "value": owner or ""},
+        {"name": "REPO", "value": repo  or ""},
+        {"name": "SHA", "value": sha or ""}
+    ]
 
     response = {
         "resource": resource,
@@ -27,7 +36,9 @@ def handler(event, context):
     security_group = os.environ.get('SECURITY_GROUP')
 
     # Build and return API Gateway–style response
+    print("env_overrides =", json.dumps(env_overrides, indent=2))
 
+    print(f"TASK -> {task}")
     response = ecs.run_task(
         cluster=cluster_arn,
         taskDefinition=task,
@@ -38,6 +49,15 @@ def handler(event, context):
                 'assignPublicIp': 'ENABLED',
                 'securityGroups': [security_group],
             }
+        },
+        overrides={
+            'containerOverrides': [
+                {
+                    'name': 'cdk-deployer',
+                    'environment': env_overrides
+                }
+            ]
+
         }
     )
     return {
@@ -47,6 +67,7 @@ def handler(event, context):
             "tasks": f"task: {task}",
             "sg": f"sg: {security_group}",
             "clusters": f"cluster_arn: {cluster_arn}",
+            "parameters": f"repo: {repo}, sha: {sha}, owner: {owner}", 
             # "debug": response  # uncomment if you want to see the event details
         })
     }
