@@ -23,10 +23,10 @@ export class EcsTaskStack extends Stack {
       description: 'Allow outbound HTTPS for Fargate tasks',
       allowAllOutbound: true,
     });
-    const cluster = new ecs.Cluster(this, 'FargateCluster', {vpc: props.vpc})
+    const cluster = new ecs.Cluster(this, 'CdkDeployCluster', {vpc: props.vpc})
     const taskDefinition = new ecs.TaskDefinition(this, 'TD', {
-	memoryMiB: '512',
-	cpu: '256',
+	memoryMiB: '4096',
+	cpu: '512',
 	compatibility: ecs.Compatibility.FARGATE,
     });
     // Task definiton needs permissions to pull from ECR
@@ -42,6 +42,16 @@ export class EcsTaskStack extends Stack {
     effect: iam.Effect.ALLOW,
     resources: ["*"],
     }));
+    taskDefinition.addToExecutionRolePolicy(new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: ['sts:AssumeRole'],
+      resources: ['arn:aws:iam::*:role/cdk-*'],
+    }));
+    taskDefinition.taskRole.addManagedPolicy(
+    iam.ManagedPolicy.fromAwsManagedPolicyName("AdministratorAccess")
+
+)
+
     
 
     const repo = ecr.Repository.fromRepositoryArn(this, 'TaffyProdRepo', "arn:aws:ecr:us-east-1:037444031381:repository/taffy-prod-images")
@@ -85,7 +95,7 @@ export class EcsTaskStack extends Stack {
 
     const containerDefinition = taskDefinition.addContainer('cdk-deployer', {
 	image: ecs.ContainerImage.fromEcrRepository(repo,"latest"),
-	memoryLimitMiB: 256,
+	memoryLimitMiB: 4096,
 	logging: ecs.LogDriver.awsLogs({
           streamPrefix: 'ecs',
 	  logGroup,

@@ -32,10 +32,29 @@ export class VpcStack extends Stack {
     });
     this.vpc = vpc
 
-    const cluster = new ecs.Cluster(this, "MyCluster", {
+    const cluster = new ecs.Cluster(this, "GithubCluster", {
       vpc: vpc
     });
+
+    const customer_cluster = new ecs.Cluster(this, 'CustomerCluster', {vpc: vpc})
     
+
+    new ssm.StringParameter(this, 'CustomerClusterName', {
+	allowedPattern: '.*',
+	description: 'VPC id for other stacks to reference',
+	parameterName: '/taffy/cluster/customer/name',
+	stringValue: customer_cluster.clusterName,
+	//tier: ssm.ParameterTier.ADVANCED,
+    })
+    
+    new ssm.StringParameter(this, 'CustomerClusterArn', {
+	allowedPattern: '.*',
+	description: 'VPC id for other stacks to reference',
+	parameterName: '/taffy/cluster/customer',
+	stringValue: customer_cluster.clusterArn,
+	//tier: ssm.ParameterTier.ADVANCED,
+    })
+
 
     
     new ssm.StringParameter(this, 'Parameter', {

@@ -12,6 +12,8 @@ def handler(event, context):
     owner = query_params.get("owner")
     sha = query_params.get("sha")
     repo = query_params.get("repo")
+    pr = query_params.get("pr")
+
     body = event.get('body')
 
     ecs = boto3.client('ecs', region_name="us-east-1")
@@ -19,7 +21,8 @@ def handler(event, context):
     env_overrides = [
         {"name": "OWNER", "value": owner or ""},
         {"name": "REPO", "value": repo  or ""},
-        {"name": "SHA", "value": sha or ""}
+        {"name": "SHA", "value": sha or ""},
+        {"name": "PR", "value": pr or ""}
     ]
 
     response = {
@@ -39,6 +42,7 @@ def handler(event, context):
     print("env_overrides =", json.dumps(env_overrides, indent=2))
 
     print(f"TASK -> {task}")
+    print(f"CLUSTER -> {cluster_arn}")
     response = ecs.run_task(
         cluster=cluster_arn,
         taskDefinition=task,
