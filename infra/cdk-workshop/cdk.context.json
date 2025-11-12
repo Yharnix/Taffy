@@ -7,8 +7,12 @@
     "us-east-1e",
     "us-east-1f"
   ],
-  "ssm:account=037444031381:parameterName=/taffy/vpc/public-subnets:region=us-east-1": "subnet-072c08009decc1b52,subnet-037f288539e15fe0d,subnet-0ecd0e0351570b620",
-  "ssm:account=037444031381:parameterName=/taffy/taskdef_arn:region=us-east-1": "arn:aws:ecs:us-east-1:037444031381:task-definition/TaskStackTD914A46F5:11",
-  "ssm:account=037444031381:parameterName=/taffy/cluster:region=us-east-1": "arn:aws:ecs:us-east-1:037444031381:cluster/TaskStack-CdkDeployClusterF302A6B6-4xeHk6ZVp9fd",
-  "ssm:account=037444031381:parameterName=/taffy/security_group_fargate:region=us-east-1": "sg-0a894d4361822fccd"
+  "hosted-zone:account=037444031381:domainName=taffyrun.com:region=us-east-1": {
+    "Id": "/hostedzone/Z0898189SVYO9CTCRNS8",
+    "Name": "taffyrun.com."
+  },
+  "ssm:account=037444031381:parameterName=/taffy/vpc/public-subnets:region=us-east-1": "subnet-091a531ad52dedf7d,subnet-034c45c5157d46e56,subnet-0ba66004f1a658964",
+  "ssm:account=037444031381:parameterName=/taffy/taskdef_arn:region=us-east-1": "arn:aws:ecs:us-east-1:037444031381:task-definition/TaskStackTD914A46F5:14",
+  "ssm:account=037444031381:parameterName=/taffy/cluster:region=us-east-1": "arn:aws:ecs:us-east-1:037444031381:cluster/TaskStack-CdkDeployClusterF302A6B6-yO7F76oc8SMO",
+  "ssm:account=037444031381:parameterName=/taffy/security_group_fargate:region=us-east-1": "sg-047453857ffd95351"
 }

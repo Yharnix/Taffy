@@ -208,3 +208,16 @@ I am looking for a role for a role for DevOps, In my internship I provided great
 
 * Security
 - [ ] ECR :: ECR must not allow tag overwriting, explitly state not allowing mutable tag uploads
+
+* Issues
+The things running have to be an api or something can not be a one off task
+Expensive resourecs,
+Nat gateway,
+Completely load balanced service on each pull
+
+
+* Next
+- double check the A record and Github webhook setup with that value
+- make a fastapi demo repo on pull request
+- set the output as the load balancer output
+- On pr close destroy the stack

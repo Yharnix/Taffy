@@ -15,6 +15,6 @@ export class EcrStack extends Stack {
     const repository = new ecr.Repository(this, 'Repo', {
       repositoryName: 'taffy-images'
     })
-    this.repository = repository
+    this.repository = personal_repo
   }
 }

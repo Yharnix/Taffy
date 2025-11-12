@@ -2,7 +2,7 @@
 FROM node:20-alpine
 
 # Install AWS CLI and CDK
-RUN apk add --no-cache python3 py3-pip bash git \
+RUN apk add --no-cache python3 py3-pip bash git jq curl \
   && python3 -m venv venv \
   && . ./venv/bin/activate \
   && pip3 install awscli \
@@ -24,4 +24,5 @@ COPY . .
 
 
 # Default command
-CMD ["cdk", "synth", "--require-approval", "never"]
+# CMD ["cdk", "deploy", "--require-approval", "never"]
+ENTRYPOINT ["./entrypoint.sh"]

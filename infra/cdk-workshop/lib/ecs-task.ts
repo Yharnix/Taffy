@@ -79,16 +79,16 @@ export class EcsTaskStack extends Stack {
 	stringValue: cluster.clusterArn,
 	//tier: ssm.ParameterTier.ADVANCED,
     })
-    new ssm.StringParameter(this, 'PrivateSubnetsParam', {
+    new ssm.StringListParameter(this, 'PrivateSubnetsParam', {
 	parameterName: '/taffy/vpc/private-subnets',
 	description: 'Comma-separated list of private subnet IDs for ECS tasks',
-	stringValue: props.vpc.privateSubnets.map(s => s.subnetId).join(','),
+	stringListValue: props.vpc.privateSubnets.map(s => s.subnetId),
     });
 
-    new ssm.StringParameter(this, 'PublicSubnetsParam', {
+    new ssm.StringListParameter(this, 'PublicSubnetsParam', {
 	parameterName: '/taffy/vpc/public-subnets',
 	description: 'Comma-separated list of public subnet IDs for ECS tasks',
-	stringValue: props.vpc.publicSubnets.map(s => s.subnetId).join(','),
+	stringListValue: props.vpc.publicSubnets.map(s => s.subnetId),
     });
 
 

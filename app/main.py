@@ -31,6 +31,19 @@ def make_jwt():
     }
     return jwt.encode(payload, private_key_path, algorithm="RS256")
 
+
+def get_installation_id(owner, repo):
+    jwt_token = make_jwt()
+    url = f"https://api.github.com/repos/{owner}/{repo}/installation"
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "Authorization": f"Bearer {jwt_token}",
+        "X-GitHub-Api-Version": "2022-11-28",
+    }
+    res = requests.get(url, headers=headers)
+    res.raise_for_status()
+    return res.json()["id"]
+
 def get_install_token(install_id: str): 
     token = make_jwt()
     url = f"https://api.github.com/app/installations/{install_id}/access_tokens"
@@ -121,6 +134,29 @@ def installed_app():
     r = requests.get(f"https://api.github.com/repos/Yharnix/ci/installation", headers=headers)
     print(r.json())
     return r.json()
+
+@app.get("/deployed")
+def comment_dns(owner: str, repo: str, pr_number: str, dns: str):
+    install_id = get_installation_id(owner, repo)
+    token = get_install_token(install_id)
+    url = f"https://api.github.com/repos/{owner}/{repo}/issues/{pr_number}/comments"
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "Authorization": f"Bearer {token}",
+        "X-GitHub-Api-Version": "2022-11-28",
+    }
+    data = {"body": f"Application deployed at -> {dns}"}
+    res = requests.post(url, headers=headers,json=data)
+    print(res.status_code)
+    print(res.json())
+
+def make_headers(token: str):
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "Authorization": f"Bearer {token}",
+        "X-GitHub-Api-Version": "2022-11-28",
+    }
+    return headers
      
     
 @app.post("/app/webhook")

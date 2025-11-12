@@ -6,6 +6,8 @@ import { aws_ssm as ssm } from 'aws-cdk-lib';
 import { aws_ecs as ecs } from 'aws-cdk-lib';
 import * as ecs_patterns from "aws-cdk-lib/aws-ecs-patterns";
 import {aws_route53 as route53} from 'aws-cdk-lib';
+import { RemovalPolicy } from 'aws-cdk-lib'
+import { CfnResource } from 'aws-cdk-lib'
 
 
 
@@ -23,9 +25,13 @@ export class VpcStack extends Stack {
     super(scope, id, props);
     const { repository } = props;
     
-    const zone = new route53.PublicHostedZone(this, 'TaffyZone', {
-      zoneName: 'taffyrun.com',
+    const zone = route53.HostedZone.fromLookup(this, 'TaffyZone', {
+      domainName: 'taffyrun.com',
     });
+
+    
+    // const hosted_zone = zone.node.findChild('Resource') as CfnResource;
+    // hosted_zone.applyRemovalPolicy(RemovalPolicy.RETAIN)
 
     const vpc = new ec2.Vpc(this, "MyVpc", {
       maxAzs: 3 // Default is all AZs in region
@@ -65,6 +71,7 @@ export class VpcStack extends Stack {
 	//tier: ssm.ParameterTier.ADVANCED,
     })
 
+
     // Create a load-balanced Fargate service and make it public
     new ecs_patterns.ApplicationLoadBalancedFargateService(this, "MyFargateService", {
       cluster: cluster, // Required
@@ -72,7 +79,7 @@ export class VpcStack extends Stack {
       domainZone: zone,
       domainName: 'github-webhook.taffyrun.com',
       desiredCount: 1, // Default is 1
-      taskImageOptions: { image: ecs.ContainerImage.fromEcrRepository(repository, "latest") },
+      taskImageOptions: { image: ecs.ContainerImage.fromEcrRepository(repository, "github") },
       memoryLimitMiB: 2048, // Default is 512
       publicLoadBalancer: true // Default is true
     });
