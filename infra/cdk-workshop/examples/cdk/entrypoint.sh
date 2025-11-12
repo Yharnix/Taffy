@@ -7,3 +7,4 @@ echo "url -> ${DNS}"
 output="http://github-webhook.taffyrun.com/deployed?owner=${OWNER}&repo=${REPO}&pr_number=${PR}&dns=${DNS}"
 echo $output
 curl "$output"
+
