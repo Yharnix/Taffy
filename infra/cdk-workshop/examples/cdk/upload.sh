@@ -13,3 +13,4 @@ docker tag test_image "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/taffy-p
 docker push "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/taffy-prod-images:latest"
 
 docker run test_image
+
